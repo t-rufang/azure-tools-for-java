@@ -27,6 +27,7 @@ import com.microsoft.azure.hdinsight.sdk.common.azure.serverless.AzureSparkServe
 import com.microsoft.azure.hdinsight.sdk.common.azure.serverless.AzureSparkServerlessCluster;
 import com.microsoft.azuretools.azurecommons.helpers.AzureCmdException;
 import com.microsoft.azuretools.azurecommons.helpers.NotNull;
+import com.microsoft.tooling.msservices.components.DefaultLoader;
 import com.microsoft.tooling.msservices.serviceexplorer.AzureRefreshableNode;
 import com.microsoft.tooling.msservices.serviceexplorer.Node;
 import com.microsoft.tooling.msservices.serviceexplorer.NodeActionEvent;
@@ -85,8 +86,9 @@ public class SparkServerlessClusterNode extends AzureRefreshableNode {
             @Override
             protected void actionPerformed(NodeActionEvent e) throws AzureCmdException {
                 try {
-                    Desktop.getDesktop().browse(URI.create(String.valueOf(cluster.getSparkMasterUiUri() + suffix)));
-                } catch (IOException ignore) {
+                    DefaultLoader.getIdeHelper().openLinkInBrowser(String.valueOf(cluster.getSparkMasterUiUri() + suffix));
+                } catch (Exception ex) {
+                    DefaultLoader.getUIHelper().showError(ex.getMessage(), "Azure Data Lake Spark Explorer");
                 }
             }
         });
@@ -94,8 +96,9 @@ public class SparkServerlessClusterNode extends AzureRefreshableNode {
             @Override
             protected void actionPerformed(NodeActionEvent e) throws AzureCmdException {
                 try {
-                    Desktop.getDesktop().browse(URI.create(String.valueOf(cluster.getSparkHistoryUiUri() + suffix)));
-                } catch (IOException ignore) {
+                    DefaultLoader.getIdeHelper().openLinkInBrowser(String.valueOf(cluster.getSparkHistoryUiUri() + suffix));
+                } catch (Exception ex) {
+                    DefaultLoader.getUIHelper().showError(ex.getMessage(), "Azure Data Lake Spark Explorer");
                 }
             }
         });
