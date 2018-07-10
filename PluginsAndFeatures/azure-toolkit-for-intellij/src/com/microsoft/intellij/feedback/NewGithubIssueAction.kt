@@ -20,21 +20,14 @@
  * SOFTWARE.
  */
 
-package com.microsoft.azure.sparkserverless.common;
+package com.microsoft.intellij.feedback
 
-import com.microsoft.azuretools.azurecommons.helpers.Nullable;
-import org.jdesktop.swingx.JXHyperlink;
-import org.jdesktop.swingx.hyperlink.HyperlinkAction;
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.microsoft.azuretools.ijidea.utility.AzureAnAction
 
-import java.net.URI;
-
-public class JXHyperLinkWithUri extends JXHyperlink {
-    @Override
-    public void setURI(@Nullable URI uri) {
-        // setURI() in JXHyperlink will set uri to text field
-        // so we override this method to keep text field not change
-        String initialText = this.getText();
-        this.setAction(HyperlinkAction.createHyperlinkAction(uri));
-        this.setText(initialText);
+class NewGithubIssueAction(private val issue: GithubIssue<out Reportable>, actionTitle: String)
+        : AzureAnAction(actionTitle) {
+    override fun onActionPerformed(anActionEvent: AnActionEvent?) {
+        issue.report()
     }
 }

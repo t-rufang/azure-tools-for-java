@@ -20,21 +20,16 @@
  * SOFTWARE.
  */
 
-package com.microsoft.azure.sparkserverless.common;
+package com.microsoft.intellij.feedback
 
-import com.microsoft.azuretools.azurecommons.helpers.Nullable;
-import org.jdesktop.swingx.JXHyperlink;
-import org.jdesktop.swingx.hyperlink.HyperlinkAction;
+class ReportableSurvey(shortMessage: String) : Reportable(shortMessage) {
+    private val questions = listOf(
+                "# 1. Are you satisfied with the Azure Spark development functionalities & experiences offered in Azure Toolkit for IntelliJ? Please rate us from 1 (poor) to 10 (excellent).",
+                "# 2. What did you like or dislike about Azure Toolkit for IntelliJ?",
+                "# 3. What enhancements would you like Azure Toolkit for IntelliJ to implement?"
+    )
 
-import java.net.URI;
-
-public class JXHyperLinkWithUri extends JXHyperlink {
-    @Override
-    public void setURI(@Nullable URI uri) {
-        // setURI() in JXHyperlink will set uri to text field
-        // so we override this method to keep text field not change
-        String initialText = this.getText();
-        this.setAction(HyperlinkAction.createHyperlinkAction(uri));
-        this.setText(initialText);
+    override fun getBody(): String {
+        return super.getBody() + "\n\n" + questions.joinToString("\n\n") + "\n\n"
     }
 }

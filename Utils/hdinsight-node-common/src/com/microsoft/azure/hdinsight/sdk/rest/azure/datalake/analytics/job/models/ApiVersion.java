@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) Microsoft Corporation
  *
  * All rights reserved.
@@ -18,23 +18,11 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
-package com.microsoft.azure.sparkserverless.common;
+package com.microsoft.azure.hdinsight.sdk.rest.azure.datalake.analytics.job.models;
 
-import com.microsoft.azuretools.azurecommons.helpers.Nullable;
-import org.jdesktop.swingx.JXHyperlink;
-import org.jdesktop.swingx.hyperlink.HyperlinkAction;
-
-import java.net.URI;
-
-public class JXHyperLinkWithUri extends JXHyperlink {
-    @Override
-    public void setURI(@Nullable URI uri) {
-        // setURI() in JXHyperlink will set uri to text field
-        // so we override this method to keep text field not change
-        String initialText = this.getText();
-        this.setAction(HyperlinkAction.createHyperlinkAction(uri));
-        this.setText(initialText);
-    }
+public class ApiVersion {
+    public static final String VERSION = "2016-11-01";
 }
