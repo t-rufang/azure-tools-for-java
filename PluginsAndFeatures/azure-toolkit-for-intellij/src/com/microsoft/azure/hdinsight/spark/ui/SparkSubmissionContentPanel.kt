@@ -128,7 +128,7 @@ open class SparkSubmissionContentPanel(private val myProject: Project, val type:
     open fun getErrorMessageClusterNameNull(isSignedIn: Boolean): String {
         return when {
             isSignedIn -> "Cluster name should not be null, please choose one for submission"
-            else -> "Can't list cluster, please login within Azure Explorer (View -> Tool Windows -> Azure Explorer) and refresh"
+            else -> "Can't list clusters under Azure account, please login within Azure Explorer (View -> Tool Windows -> Azure Explorer) and refresh"
         }
     }
 

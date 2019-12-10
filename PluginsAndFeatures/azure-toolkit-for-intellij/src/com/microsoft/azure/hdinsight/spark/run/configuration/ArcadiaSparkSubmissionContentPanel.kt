@@ -39,6 +39,13 @@ class ArcadiaSparkSubmissionContentPanel (project: Project) : SparkSubmissionCon
     override val clusterHint: String
         get() = "Spark Pools"
 
+    override fun getErrorMessageClusterNameNull(isSignedIn: Boolean): String {
+        return when {
+            isSignedIn -> "Spark pools should not be null, please choose one for submission"
+            else -> "Can't list Spark pools under Azure account, please login within Azure Explorer (View -> Tool Windows -> Azure Explorer) and refresh"
+        }
+    }
+
     override fun getData(data: SparkSubmitModel) {
         // Component -> Data
         super.getData(data)
