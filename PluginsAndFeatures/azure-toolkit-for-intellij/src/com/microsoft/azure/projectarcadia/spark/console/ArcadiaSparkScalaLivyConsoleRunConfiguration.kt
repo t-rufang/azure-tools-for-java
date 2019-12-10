@@ -54,7 +54,7 @@ class ArcadiaSparkScalaLivyConsoleRunConfiguration(project: Project,
 
     override fun getState(executor: Executor, env: ExecutionEnvironment): RunProfileState? {
         val sparkCluster = cluster as? ArcadiaSparkCompute ?: throw ExecutionException(RuntimeConfigurationError(
-                "Can't prepare Arcadia Spark interactive session since the spark compute cannot be found"))
+                "Spark pool is not selected"))
         val livyUrl = sparkCluster.connectionUrl ?: throw ExecutionException(RuntimeConfigurationError(
                 "Can't prepare Arcadia Spark interactive session since Livy URL is empty"))
 
@@ -68,7 +68,7 @@ class ArcadiaSparkScalaLivyConsoleRunConfiguration(project: Project,
             if (sparkCompute == null || tenantId == null || sparkWorkspace == null) {
                 log().warn("Arcadia Spark Compute is not selected. " +
                             "spark compute: $sparkCompute, tenant id: $tenantId, spark workspace: $sparkWorkspace")
-                throw RuntimeConfigurationError("Arcadia Spark Compute is not selected")
+                throw RuntimeConfigurationError("Spark pool is not selected")
             }
         }
             ?: throw RuntimeConfigurationError("Can't cast submitModel to ArcadiaSparkSubmitModel")
@@ -79,9 +79,7 @@ class ArcadiaSparkScalaLivyConsoleRunConfiguration(project: Project,
                 .toBlocking()
                 .first()
         } catch (ex: NoSuchElementException) {
-            throw RuntimeConfigurationError(
-                    "Can't find Arcadia spark compute (${arcadiaModel.sparkWorkspace}:${arcadiaModel.sparkCompute})"
-                            + " at tenant ${arcadiaModel.tenantId}.")
+            throw RuntimeConfigurationError("Spark pool ${arcadiaModel.sparkCompute} is not found")
         }
     }
 }

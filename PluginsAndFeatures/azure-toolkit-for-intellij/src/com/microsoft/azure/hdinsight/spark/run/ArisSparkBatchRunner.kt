@@ -81,7 +81,7 @@ class ArisSparkBatchRunner : SparkBatchJobRunner() {
     ): ISparkBatchJob {
         val clusterName = submitModel.submissionParameter.clusterName
         val clusterDetail = ClusterManagerEx.getInstance().getClusterDetailByName(clusterName)
-            .orElseThrow { ExecutionException("Can't find cluster named $clusterName") }
+            .orElseThrow { ExecutionException(getClusterNotFoundErrorMsg(clusterName)) }
 
         val jobDeploy = SparkBatchJobDeployFactory.getInstance().buildSparkBatchJobDeploy(submitModel, clusterDetail, ctrlSubject)
         // UTC Time sample: 2019-07-09T02:47:34.245Z

@@ -54,9 +54,8 @@ open class SparkScalaLivyConsoleRunConfiguration(project: Project,
     protected open val submitModel : SparkSubmitModel?
         get() = batchRunConfiguration?.submitModel
 
-    protected open var clusterName : String = ""
+    protected open var clusterName : String? = ""
         get() = submitModel?.submissionParameter?.clusterName
-            ?: throw RuntimeConfigurationWarning("A $runConfigurationTypeName should be selected to start a console")
 
     protected var cluster: IClusterDetail? = null
 
@@ -73,8 +72,7 @@ open class SparkScalaLivyConsoleRunConfiguration(project: Project,
     }
 
     override fun getState(executor: Executor, env: ExecutionEnvironment): RunProfileState? {
-        val cluster = cluster ?: throw ExecutionException(RuntimeConfigurationError(
-                "Can't prepare Spark Livy interactive session since the target cluster isn't set or found"))
+        val cluster = cluster ?: throw ExecutionException(RuntimeConfigurationError("Spark cluster is not selected"))
         val url = URI.create((cluster as? LivyCluster)?.livyConnectionUrl ?: return null)
         val session = if (cluster is MfaEspCluster) MfaEspSparkSession(
                 name,
@@ -90,7 +88,11 @@ open class SparkScalaLivyConsoleRunConfiguration(project: Project,
     }
 
     override fun checkRunnerSettings(runner: ProgramRunner<*>, runnerSettings: RunnerSettings?, configurationPerRunnerSettings: ConfigurationPerRunnerSettings?) {
+        if (clusterName == null) {
+            throw RuntimeConfigurationError("Spark cluster is not selected")
+        }
+
         cluster = ClusterManagerEx.getInstance().getClusterDetailByName(clusterName)
-                .orElseThrow { RuntimeConfigurationError("Can't find the target cluster $clusterName") }
+                .orElseThrow { RuntimeConfigurationError("Spark cluster $clusterName is not found") }
     }
 }

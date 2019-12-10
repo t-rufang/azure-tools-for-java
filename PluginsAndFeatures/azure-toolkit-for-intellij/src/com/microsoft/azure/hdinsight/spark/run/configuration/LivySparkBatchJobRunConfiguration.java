@@ -278,7 +278,7 @@ public class LivySparkBatchJobRunConfiguration extends AbstractRunConfiguration 
     }
 
     protected String getErrorMessageClusterNull() {
-        return "The cluster should be selected as the target for Spark application submission";
+        return "Spark cluster is not selected in configuration";
     }
 
     protected void checkSubmissionConfigurationBeforeRun(@NotNull SparkSubmissionRunner runner) throws RuntimeConfigurationException {

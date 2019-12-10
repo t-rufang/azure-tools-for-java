@@ -43,18 +43,23 @@ class CosmosServerlessSparkBatchRunner : SparkBatchJobRunner() {
         return "CosmosServerlessSparkBatchRun"
     }
 
+    override fun getClusterNotFoundErrorMsg(clusterName: String?): String {
+        return if (clusterName == null) "Account name is not selected in configuration" else
+            "Account name $clusterName is not found"
+    }
+
     @Throws(ExecutionException::class)
     override fun buildSparkBatchJob(submitModel: SparkSubmitModel, ctrlSubject: Observer<AbstractMap.SimpleImmutableEntry<MessageInfoType, String>>): ISparkBatchJob {
         val submissionParameter = submitModel.submissionParameter as CreateSparkBatchJobParameters
         val adlAccountName = submissionParameter.clusterName
         val account = AzureSparkCosmosClusterManager.getInstance().getAccountByName(adlAccountName)
-                ?: throw ExecutionException("Can't find ADLA account '$adlAccountName'")
+                ?: throw ExecutionException(getClusterNotFoundErrorMsg(adlAccountName))
 
         val accessToken = try {
             account.http.accessToken
         } catch (ex: IOException) {
             log().warn("Error getting access token. " + ExceptionUtils.getStackTrace(ex))
-            throw ExecutionException("Error getting access token.", ex)
+            throw ExecutionException("Error getting access token", ex)
         }
         val storageRootPath = account.storageRootPath ?: throw ExecutionException("Error getting ADLS storage root path for account ${account.name}")
 

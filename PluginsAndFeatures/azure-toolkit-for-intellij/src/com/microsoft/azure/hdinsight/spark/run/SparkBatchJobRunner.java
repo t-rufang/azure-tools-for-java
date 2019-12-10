@@ -40,8 +40,6 @@ import com.intellij.openapi.project.Project;
 import com.microsoft.azure.hdinsight.common.ClusterManagerEx;
 import com.microsoft.azure.hdinsight.common.MessageInfoType;
 import com.microsoft.azure.hdinsight.common.logger.ILogger;
-import com.microsoft.azure.hdinsight.sdk.cluster.ClusterDetail;
-import com.microsoft.azure.hdinsight.sdk.cluster.HDInsightAdditionalClusterDetail;
 import com.microsoft.azure.hdinsight.sdk.cluster.IClusterDetail;
 import com.microsoft.azure.hdinsight.sdk.cluster.MfaEspCluster;
 import com.microsoft.azure.hdinsight.spark.common.*;
@@ -77,13 +75,20 @@ public class SparkBatchJobRunner extends DefaultProgramRunner implements SparkSu
                 && profile.getClass() == LivySparkBatchJobRunConfiguration.class;
     }
 
+    @NotNull
+    protected String getClusterNotFoundErrorMsg(String clusterName) {
+        return clusterName == null
+                ? "Spark cluster is not selected in configuration"
+                : "Spark cluster " +  clusterName + " is not found";
+    }
+
     @Override
     @NotNull
     public ISparkBatchJob buildSparkBatchJob(@NotNull SparkSubmitModel submitModel,
                                              @NotNull Observer<SimpleImmutableEntry<MessageInfoType, String>> ctrlSubject) throws ExecutionException {
         String clusterName = submitModel.getSubmissionParameter().getClusterName();
         IClusterDetail clusterDetail = ClusterManagerEx.getInstance().getClusterDetailByName(clusterName)
-                .orElseThrow(() -> new ExecutionException("Can't find cluster named " + clusterName));
+                .orElseThrow(() -> new ExecutionException(getClusterNotFoundErrorMsg(clusterName)));
 
         Deployable jobDeploy = SparkBatchJobDeployFactory.getInstance().buildSparkBatchJobDeploy(
                 submitModel, clusterDetail, ctrlSubject);

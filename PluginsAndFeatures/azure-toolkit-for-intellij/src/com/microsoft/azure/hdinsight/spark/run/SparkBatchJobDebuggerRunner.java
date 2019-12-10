@@ -363,6 +363,13 @@ public class SparkBatchJobDebuggerRunner extends GenericDebuggerRunner implement
     }
 
     @NotNull
+    protected String getClusterNotFoundErrorMsg(String clusterName) {
+        return clusterName == null
+                ? "Spark cluster is not selected in configuration"
+                : "Spark cluster " +  clusterName + " is not found";
+    }
+
+    @NotNull
     @Override
     public ISparkBatchJob buildSparkBatchJob(@NotNull SparkSubmitModel submitModel, @NotNull Observer<SimpleImmutableEntry<MessageInfoType, String>> ctrlSubject) throws ExecutionException {
         try {
@@ -373,7 +380,7 @@ public class SparkBatchJobDebuggerRunner extends GenericDebuggerRunner implement
 
             String clusterName = submitModel.getSubmissionParameter().getClusterName();
             IClusterDetail clusterDetail = ClusterManagerEx.getInstance().getClusterDetailByName(clusterName)
-                    .orElseThrow(() -> new ExecutionException("Can't find cluster named " + clusterName));
+                    .orElseThrow(() -> new ExecutionException(getClusterNotFoundErrorMsg(clusterName)));
 
             Deployable jobDeploy = SparkBatchJobDeployFactory.getInstance().buildSparkBatchJobDeploy(
                     debugModel, clusterDetail, ctrlSubject);

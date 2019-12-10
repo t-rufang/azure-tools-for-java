@@ -54,7 +54,7 @@ class CosmosSparkScalaLivyConsoleRunConfiguration(project: Project,
 
     override fun getState(executor: Executor, env: ExecutionEnvironment): RunProfileState? {
         val sparkCluster = cluster as? AzureSparkCosmosCluster ?: throw ExecutionException(RuntimeConfigurationError(
-                "Can't prepare Spark Cosmos interactive session since the target account isn't set or found"))
+                "Spark pool is not selected"))
 
         val livyUrl = (sparkCluster.livyUri?.toString() ?: return null).trimEnd('/') + "/"
 
@@ -72,7 +72,7 @@ class CosmosSparkScalaLivyConsoleRunConfiguration(project: Project,
                 ?: throw RuntimeConfigurationError("Can't cast submitModel to CosmosSparkSubmitModel")
 
         val adlAccount = cosmosSparkSubmitModel?.accountName
-                ?: throw RuntimeConfigurationError("The target cluster name is not selected")
+                ?: throw RuntimeConfigurationError("Spark cluster is not selected")
 
         cluster = AzureSparkCosmosClusterManager
                 .getInstance()
@@ -80,6 +80,6 @@ class CosmosSparkScalaLivyConsoleRunConfiguration(project: Project,
                 .clusters
                 .find { it.name == this.clusterName &&
                         (it as AzureSparkCosmosCluster).clusterStateForShow.equals(SparkItemGroupState.STABLE.toString(), ignoreCase = true )}
-                ?:throw RuntimeConfigurationError("Can't find the workable(STABLE) target cluster $clusterName@$adlAccount")
+                ?:throw RuntimeConfigurationError("Spark cluster $clusterName@$adlAccount is not found")
     }
 }
