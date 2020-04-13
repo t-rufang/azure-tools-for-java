@@ -272,6 +272,8 @@ public class SparkBatchJobDeployFactory implements ILogger {
                 }
 
                 break;
+            default:
+                throw new ExecutionException("Unsupported job upload storage type");
         }
 
         //TODO:use httpobservable to replace sparkbathsubmission and deprecate the old constructor.
