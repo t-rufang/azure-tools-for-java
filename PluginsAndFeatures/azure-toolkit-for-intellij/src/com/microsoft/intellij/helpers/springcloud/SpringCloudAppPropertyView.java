@@ -106,7 +106,7 @@ public class SpringCloudAppPropertyView extends BaseEditor implements IDataRefre
     private JLabel lblAppName;
     private JLabel lblPublic;
     private JPanel instanceDetailHolder;
-    private JPanel instanceDetailPanel;
+    private JScrollPane pnlScroll;
     private JPanel statusPanel;
     private JButton triggerPersistentButton;
     private JComboBox memCombo;
@@ -122,6 +122,13 @@ public class SpringCloudAppPropertyView extends BaseEditor implements IDataRefre
     private JLabel appNameLabel;
     private JLabel persistentLabel;
     private EnvironmentVariablesTextFieldWithBrowseButton envTable;
+    private JPanel pnlOptions;
+    private JPanel pnlDetails;
+    private JPanel pnlInstances;
+    private JSeparator split;
+    private JLabel lblInstances;
+    private JLabel lblPersistentStorage;
+    private JLabel lblEnv;
     private HideableDecorator instancePanelDecorator;
 
     private SpringAppViewModel viewModel;
@@ -149,7 +156,6 @@ public class SpringCloudAppPropertyView extends BaseEditor implements IDataRefre
         instanceTable.setRowSelectionAllowed(true);
         instanceTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         instanceTable.getEmptyText().setText("Loading instances status");
-        instanceTable.setPreferredSize(new Dimension(-1, 200));
         this.saveButton.addActionListener(e -> {
             wrapperOperations(TelemetryConstants.SAVE_SPRING_CLOUD_APP, SAVING_ACTION, project, (changes) -> {
                 if (changes.isEmpty()) {
@@ -246,8 +252,10 @@ public class SpringCloudAppPropertyView extends BaseEditor implements IDataRefre
             }
         });
         this.envTable.getTextField().setEditable(false);
-        instancePanelDecorator = new HideableDecorator(instanceDetailHolder, "Instances", true);
-        instancePanelDecorator.setContentComponent(instanceDetailPanel);
+        this.lblEnv.setLabelFor(envTable.getTextField());
+
+        instancePanelDecorator = new HideableDecorator(instanceDetailHolder, "Instances", false);
+        instancePanelDecorator.setContentComponent(pnlScroll);
         instancePanelDecorator.setOn(true);
 
         IntStream.range(1, 5).forEach(cpuCombo::addItem);
@@ -259,6 +267,8 @@ public class SpringCloudAppPropertyView extends BaseEditor implements IDataRefre
         this.cpuCombo.setEditable(false);
         this.memCombo.setEditable(false);
         this.javaVersionCombo.setEditable(false);
+
+        initUI();
     }
 
     @NotNull
@@ -323,6 +333,15 @@ public class SpringCloudAppPropertyView extends BaseEditor implements IDataRefre
                 });
 
         }
+    }
+
+    private void initUI() {
+        // Todo: find better way to align UI labels
+        ApplicationManager.getApplication().invokeLater(() -> {
+            Dimension size = lblInstances.getPreferredSize();
+            size.setSize(lblPersistentStorage.getWidth(), size.getHeight());
+            lblInstances.setPreferredSize(size);
+        });
     }
 
     private void freezeUI() {
