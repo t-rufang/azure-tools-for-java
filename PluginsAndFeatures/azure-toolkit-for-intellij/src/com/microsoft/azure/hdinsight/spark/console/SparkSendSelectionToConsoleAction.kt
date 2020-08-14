@@ -102,7 +102,7 @@ class SparkSendSelectionToConsoleAction : AzureAnAction(), ILogger {
         } catch (ex: Exception) {
             val errMsg = "Failed to send codes `$text` to Apache Spark Console"
             log().warn(errMsg, ex)
-            EventUtil.logError(operation, ErrorType.systemError, IOException(errMsg, ex), null, null)
+            EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.systemError, IOException(errMsg, ex), null, null)
         }
 
         consoleDetail.console.indexCodes(text)

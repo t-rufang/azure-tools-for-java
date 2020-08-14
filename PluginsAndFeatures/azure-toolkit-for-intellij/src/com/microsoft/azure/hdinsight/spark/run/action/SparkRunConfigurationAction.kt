@@ -116,7 +116,7 @@ abstract class SparkRunConfigurationAction : AzureAnAction, ILogger {
                         if (canRun(it)) {
                             runExisting(it, operation)
                         } else {
-                            EventUtil.logErrorWithComplete(operation, ErrorType.userError, RuntimeConfigurationError("Not a runnable configuration"), null, null)
+                            EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.userError, RuntimeConfigurationError("Not a runnable configuration"), null, null)
                         }
                     }
                 }
@@ -124,7 +124,7 @@ abstract class SparkRunConfigurationAction : AzureAnAction, ILogger {
                     // From context menu or Line marker action menu
                     if (!actionEvent.dataContext.isSparkContext()) {
                         // No action for out of Spark Context
-                        EventUtil.logErrorWithComplete(operation, ErrorType.userError, RuntimeConfigurationError("Not in Spark context"), null, null)
+                        EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.userError, RuntimeConfigurationError("Not in Spark context"), null, null)
                         return false
                     }
 
@@ -147,7 +147,7 @@ abstract class SparkRunConfigurationAction : AzureAnAction, ILogger {
 
                         selectedConfigSettings.isEditBeforeRun = savedIsEditBeforeRun
                     } else {
-                        EventUtil.logErrorWithComplete(operation, ErrorType.userError, RuntimeConfigurationError("Not a runnable configuration"), null, null)
+                        EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.userError, RuntimeConfigurationError("Not a runnable configuration"), null, null)
 
                         /**
                          * FIXME with [LivySparkBatchJobRunConfiguration.suggestedName]

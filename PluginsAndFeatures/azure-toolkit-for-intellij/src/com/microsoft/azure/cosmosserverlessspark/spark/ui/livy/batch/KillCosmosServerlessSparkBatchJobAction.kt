@@ -46,14 +46,14 @@ class KillCosmosServerlessSparkBatchJobAction(private val account: AzureSparkSer
                 val errorMsg = "Failed to kill spark job ${job.name()}. Batch job id is empty"
                 log().warn(errorMsg)
                 PluginUtil.displayErrorDialog("Kill Serverless Spark Job", errorMsg)
-                EventUtil.logErrorWithComplete(operation, ErrorType.systemError, IOException(errorMsg), null, null)
+                EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.systemError, IOException(errorMsg), null, null)
             } else {
                 account.getSparkBatchJobRequest(job.id().toString())
                         .flatMap { respBatchJob ->
                             if (respBatchJob.state() == SchedulerState.ENDED || respBatchJob.state() == SchedulerState.FINALIZING) {
                                 val errMsg = "Can't kill spark job ${respBatchJob.name()}. It's in '${respBatchJob.schedulerState()}' state!"
                                 PluginUtil.displayInfoDialog("Kill Serverless Spark Job", errMsg)
-                                EventUtil.logErrorWithComplete(operation, ErrorType.userError, IOException(errMsg), null, null)
+                                EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.userError, IOException(errMsg), null, null)
                                 return@flatMap Observable.just(respBatchJob)
                             } else {
                                 return@flatMap account.killSparkBatchJobRequest(job.id().toString())
@@ -61,7 +61,7 @@ class KillCosmosServerlessSparkBatchJobAction(private val account: AzureSparkSer
                                             if (resp.code >= 300) {
                                                 val errMsg = "Failed to kill spark job ${respBatchJob.name()}. ${resp.message}"
                                                 PluginUtil.displayErrorDialog("Kill Serverless Spark Job", errMsg)
-                                                EventUtil.logErrorWithComplete(operation, ErrorType.serviceError, IOException(errMsg), null, null)
+                                                EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.serviceError, IOException(errMsg), null, null)
                                             } else {
                                                 PluginUtil.displayInfoDialog("Kill Serverless Spark Job", "Successfully killed Spark Job ${respBatchJob.name()}!")
                                                 EventUtil.logEventWithComplete(EventType.info, operation, null, null)
@@ -76,7 +76,7 @@ class KillCosmosServerlessSparkBatchJobAction(private val account: AzureSparkSer
                                     val errMsg = "Failed to kill spark job ${job.name()}. ${err.message}"
                                     PluginUtil.displayErrorDialog("Kill Serverless Spark Job", errMsg)
                                     log().warn("Failed to kill serverless spark job. " + ExceptionUtils.getStackTrace(err))
-                                    EventUtil.logErrorWithComplete(operation, ErrorType.serviceError, IOException(errMsg), null, null)
+                                    EventUtil.logErrorClassNameOnlyWithComplete(operation, ErrorType.serviceError, IOException(errMsg), null, null)
                                 }
                         )
             }
