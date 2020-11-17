@@ -30,6 +30,7 @@ import com.microsoft.azure.hdinsight.sdk.cluster.SparkCluster;
 import com.microsoft.azure.hdinsight.sdk.rest.azure.synapse.models.BigDataPoolProvisioningState;
 import com.microsoft.azure.hdinsight.sdk.rest.azure.synapse.models.BigDataPoolResourceInfo;
 import com.microsoft.azure.hdinsight.sdk.rest.azure.synapse.models.DataLakeStorageAccountDetails;
+import com.microsoft.azure.hdinsight.sdk.rest.azure.synapse.models.NodeSize;
 import com.microsoft.azure.hdinsight.sdk.storage.ADLSGen2StorageAccount;
 import com.microsoft.azure.hdinsight.sdk.storage.IHDIStorageAccount;
 import com.microsoft.azure.hdinsight.spark.common.SparkSubmitStorageType;
@@ -179,6 +180,29 @@ public class ArcadiaSparkCompute extends SparkCluster implements AzureAdAccountD
     @NotNull
     public ArcadiaWorkSpace getWorkSpace() {
         return workSpace;
+    }
+
+    public int getMaxNodeCount() {
+        if (sparkComputeResponse.autoScale() == null) {
+            log().warn(String.format("autoScale field in response is null. Workspace: %s. Spark pool: %s.",
+                                     workSpace.getName(), getName()));
+            return sparkComputeResponse.nodeCount();
+        }
+
+        return sparkComputeResponse.autoScale().enabled()
+               ? sparkComputeResponse.autoScale().maxNodeCount()
+               : sparkComputeResponse.nodeCount();
+    }
+
+    @NotNull
+    public NodeSize getNodeSize() {
+        if (sparkComputeResponse.nodeSize() == null) {
+            log().warn(String.format("nodeSize field in response is null. Workspace: %s. Spark pool: %s.",
+                                     workSpace.getName(), getName()));
+            return NodeSize.NONE;
+        }
+
+        return sparkComputeResponse.nodeSize();
     }
 
     @Override

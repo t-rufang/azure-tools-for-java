@@ -234,7 +234,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @return the nodeCount value
      */
     public Integer nodeCount() {
-        return this.properties == null ? null : this.properties.nodeCount;
+        return this.properties == null ? 0 : this.properties.nodeCount;
     }
 
     /**

@@ -61,6 +61,8 @@ class ArcadiaSparkSubmissionContentPanel (project: Project) : SparkSubmissionCon
                 is ArcadiaSparkCompute -> SparkApplicationType.ArcadiaSpark
                 else -> SparkApplicationType.None
             }
+            arcadiaData.nodeSize = (cluster as? ArcadiaSparkCompute)?.nodeSize
+            arcadiaData.maxNodeCount = (cluster as? ArcadiaSparkCompute)?.maxNodeCount ?: 0
         }
     }
 }
