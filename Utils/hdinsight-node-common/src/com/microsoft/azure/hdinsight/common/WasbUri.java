@@ -90,7 +90,7 @@ public final class WasbUri extends AzureStorageUri {
     }
 
     public String getHadoopBlobFsPropertyKey() {
-        return String.format("fs.azure.account.key.%s.blob.%s", getStorageAccount(), getEndpointSuffix());
+        return String.format("spark.hadoop.fs.azure.account.key.%s.blob.%s", getStorageAccount(), getEndpointSuffix());
     }
 
     public static WasbUri parse(final String blobUri) {

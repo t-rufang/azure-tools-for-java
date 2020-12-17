@@ -327,6 +327,14 @@ public class SparkSubmissionParameter implements IConvertible {
         return messageList;
     }
 
+    @JsonIgnore
+    public Map<String, Object> updateJobConfig(String key, Object value) {
+        Map<String, Object> clonedJobConfig = new HashMap<>(this.jobConfig);
+        clonedJobConfig.put(key, value);
+        this.jobConfig = clonedJobConfig;
+        return this.jobConfig;
+    }
+
     @NotNull
     public List<Pair<String, String>> flatJobConfig() {
         List<Pair<String, String>> flattedConfigs = new ArrayList<>();
