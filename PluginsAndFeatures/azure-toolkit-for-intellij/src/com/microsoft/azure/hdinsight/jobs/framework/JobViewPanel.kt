@@ -17,20 +17,20 @@ class JobViewPanel(private val rootPath: String, private val clusterName: String
 
     init {
         val url = String.format("file:///%s/com.microsoft.hdinsight/hdinsight/job/html/index.html", rootPath)
-
+/*
         // for debug only
-//        final String ideaSystemPath = System.getProperty("idea.system.path");
-//        if(!StringHelper.isNullOrWhiteSpace(ideaSystemPath) && ideaSystemPath.contains("idea-sandbox")) {
-//            final String workFolder = System.getProperty("user.dir");
-//            final String path = "Utils/hdinsight-node-common/resources/htmlResources/hdinsight/job/html/index.html";
-//            url = String.format("file:///%s/%s", workFolder, path);
-//        }
-        // end of for debug only part
+        final String ideaSystemPath = System.getProperty("idea.system.path");
+        if(!StringHelper.isNullOrWhiteSpace(ideaSystemPath) && ideaSystemPath.contains("idea-sandbox")) {
+            final String workFolder = System.getProperty("user.dir");
+            final String path = "Utils/hdinsight-node-common/resources/htmlResources/hdinsight/job/html/index.html";
+            url = String.format("file:///%s/%s", workFolder, path);
+        }
+*/
         val queryString = String.format(QUERY_TEMPLATE, clusterName, JobViewHttpServer.getPort())
         val webUrl = url + queryString
 
         if (!JBCefApp.isSupported()) {
-            throw RuntimeException("JCEF is not enabled with current IDE. Please follow the instruction to enable JCEF first. https://youtrack.jetbrains" +
+            throw RuntimeException("JCEF is not enabled in current IDE. Please follow the instruction to enable JCEF first. https://youtrack.jetbrains" +
                     ".com/issue/IDEA-231833#focus=streamItem-27-3993099.0-0")
         }
 
