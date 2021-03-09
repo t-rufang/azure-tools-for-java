@@ -5,15 +5,12 @@
 
 package com.microsoft.azure.hdinsight.common;
 
+import com.microsoft.azure.hdinsight.sdk.cluster.IClusterDetail;
 import com.microsoft.azure.hdinsight.sdk.rest.spark.Application;
 import com.microsoft.azure.hdinsight.spark.jobs.ApplicationKey;
-import com.microsoft.azure.hdinsight.spark.jobs.framework.JobViewPanel;
-import com.microsoft.azure.hdinsight.sdk.cluster.IClusterDetail;
 import com.microsoft.azuretools.azurecommons.helpers.NotNull;
 import com.microsoft.azuretools.azurecommons.helpers.Nullable;
-import javafx.util.Pair;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
