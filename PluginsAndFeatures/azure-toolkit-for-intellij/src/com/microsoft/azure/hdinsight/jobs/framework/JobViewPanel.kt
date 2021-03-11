@@ -12,7 +12,7 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 
 class JobViewPanel(private val rootPath: String, private val clusterName: String) {
-    private val QUERY_TEMPLATE = "?clusterName=%s&port=%s&engineType=javafx"
+    private val QUERY_TEMPLATE = "?clusterName=%s&port=%s"
     private val myComponent: JComponent
 
     init {
