@@ -93,6 +93,8 @@ public class SparkBatchJobRunner extends DefaultProgramRunner implements SparkSu
                                                       ? new SparkConfigures(existingConfigEntry)
                                                       : new SparkConfigures();
                 wrappedConfig.put("spark.hadoop." + fsRoot.getHadoopBlobFsPropertyKey(), storageKey);
+                // We need the following config to fix issue https://github.com/microsoft/azure-tools-for-java/issues/5002
+                wrappedConfig.put("spark.hadoop." + fsRoot.getKeyProviderPropertyKey(), fsRoot.getDefaultKeyProviderPropertyValue());
                 submissionParameter.getJobConfig().put(SparkSubmissionParameter.Conf, wrappedConfig);
             } catch (final UnknownFormatConversionException error) {
                 final String errorHint = "Azure blob storage uploading path is not in correct format";

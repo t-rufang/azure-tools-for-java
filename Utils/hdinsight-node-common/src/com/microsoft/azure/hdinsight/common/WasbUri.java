@@ -25,6 +25,7 @@ public final class WasbUri extends AzureStorageUri {
             "^http[s]?://(?<storageAccount>[^/.]+)\\.blob\\.(?<endpointSuffix>[^/]+)/(?<container>[^/.]+)"
                     + "(:(?<port>[0-9]+))?(/(?<path>.*))?$",
             Pattern.CASE_INSENSITIVE);
+    public static final String SIMPLE_KEY_PROVIDER = "org.apache.hadoop.fs.azure.SimpleKeyProvider";
 
     private final LaterInit<String> container = new LaterInit<>();
     private final LaterInit<String> storageAccount = new LaterInit<>();
@@ -74,6 +75,14 @@ public final class WasbUri extends AzureStorageUri {
 
     public String getHadoopBlobFsPropertyKey() {
         return String.format("fs.azure.account.key.%s.blob.%s", getStorageAccount(), getEndpointSuffix());
+    }
+
+    public String getKeyProviderPropertyKey() {
+        return String.format("fs.azure.account.keyprovider.%s.blob.%s", getStorageAccount(), getEndpointSuffix());
+    }
+
+    public String getDefaultKeyProviderPropertyValue() {
+        return SIMPLE_KEY_PROVIDER;
     }
 
     public static WasbUri parse(final String blobUri) {
