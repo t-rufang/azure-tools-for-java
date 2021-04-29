@@ -70,6 +70,7 @@ public class SparkBatchJobRunner extends DefaultProgramRunner implements SparkSu
                : url;
     }
 
+    // WARNING: When you change anything in this method, you should also change it in SparkScalaLivyConsoleRunConfiguration::applyRunConfiguration accordingly
     protected SparkSubmissionParameter updateStorageConfigForSubmissionParameter(SparkSubmitModel submitModel) throws ExecutionException {
         // If we use virtual file system to select referenced jars or files on ADLS Gen2 storage, the selected file path will
         // be of URI schema which starts with "https://". Then job submission will fail with error like
