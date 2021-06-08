@@ -358,7 +358,7 @@ public class SparkSubmissionExDialog extends Dialog {
 
         localArtifactBrowseButton.getAccessible().addAccessibleListener(new AccessibleAdapter() {
             public void getName(AccessibleEvent event) {
-                event.result = localArtifactRadioButton.getText() + " open System File dialog to select artifact";
+                event.result = "Browse. Open System File dialog to select artifact";
             }
         });
 
