@@ -123,7 +123,7 @@ public class SparkSubmissionToolWindowView extends ViewPart {
 
         openSparkUIButton = new Button(composite, SWT.PUSH);
         openSparkUIButton.setText("Open Spark UI");
-        openSparkUIButton.setToolTipText("Open the corresponding Spark UI page");
+        openSparkUIButton.setToolTipText("Open Spark UI");
         openSparkUIButton.setImage(Activator.getImageDescriptor(CommonConst.OpenSparkUIIconPath).createImage());
         openSparkUIButton.addSelectionListener(new SelectionAdapter() {
             @Override
