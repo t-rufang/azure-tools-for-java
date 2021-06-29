@@ -47,6 +47,7 @@ import com.microsoft.azure.hdinsight.projects.SparkVersion;
 import com.microsoft.tooling.msservices.components.DefaultLoader;
 import com.microsoft.azuretools.telemetry.AppInsightsClient;
 import com.microsoft.azuretools.hdinsight.Activator;
+import com.microsoft.azuretools.core.utils.AccessibilityUtils;
 import com.microsoft.azuretools.core.utils.Messages;
 import com.microsoft.azuretools.core.utils.PluginUtil;
 
@@ -120,6 +121,7 @@ public class SparkLibraryOptionsPanel extends Composite {
             comboBoxUseMaven.add(sv.toString(), comboBoxUseMaven.getItemCount());
         }
         sparkVersion = SparkVersion.class.getEnumConstants()[0];
+        AccessibilityUtils.addAccessibilityNameForUIComponent(comboBoxUseMaven, "Specified Spark SDK version");
 
         comboBoxUseMaven.addSelectionListener(new SelectionListener() {
 
@@ -178,6 +180,7 @@ public class SparkLibraryOptionsPanel extends Composite {
         gridData.grabExcessHorizontalSpace = true;
         comboBoxAddSparkManually = new Combo(comAddSparkManually, SWT.READ_ONLY);
         comboBoxAddSparkManually.setLayoutData(gridData);
+        AccessibilityUtils.addAccessibilityNameForUIComponent(comboBoxAddSparkManually, "Manually selected Spark SDK");
 
         comboBoxAddSparkManually.addSelectionListener(new SelectionAdapter() {
             @Override
